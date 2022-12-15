@@ -5,7 +5,6 @@ include_once("../config/functions.php");
 include_once("../template/header.php");
 ?>
 
-<!-- ini tambahan -->
 <!-- Page Wrapper -->
 <div id="wrapper">
     <?php
