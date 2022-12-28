@@ -26,7 +26,7 @@ if ($akun>0){
     // echo "<script>document.location='../template/dashboard.php'</script>";
     
     if($data_user['level']== 'Admin'){
-        header("location: ../admin/admin.php");
+        header("location: ../admin/dashboard.php");
     }else{
         header("location: ../peminjam/home.php");
     }
