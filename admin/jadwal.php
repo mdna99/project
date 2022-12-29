@@ -1,4 +1,6 @@
 <?php
+include_once("../template/head.php");
+include_once("../template/bodyA.php");
 $jadwal = query("SELECT * FROM peminjaman");
 ?>
 
@@ -114,3 +116,7 @@ $jadwal = query("SELECT * FROM peminjaman");
 </div>
 <!-- /.container-fluid -->
 
+<?php
+include_once("../template/bodyAa.php");
+include_once("../template/foot.php");
+?>

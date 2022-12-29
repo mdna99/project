@@ -3,12 +3,12 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
-                <div class="sidebar-brand-icon rotate-n-15">
+                <div class="sidebar-brand- icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">DiOR Admin</div>
             </a>
-
+            
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
@@ -22,10 +22,7 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item 
-            <?php if($hal == 'pengajuan') : ?>
-                <?= "active" ?>
-                <?php endif ?>">
+            <li class="nav-item">
                 <a class="nav-link" href="pengajuan.php">
                     <i class="fas fa-fw fa-bookmark"></i>
                     <span>Pengajuan</span>
@@ -33,10 +30,7 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item 
-            <?php if($hal == 'jadwal') : ?>
-                <?= "active" ?>
-                <?php endif ?>">
+            <li class="nav-item">
                 <a class="nav-link" href="jadwal.php">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>Jadwal Peminjaman</span>
@@ -44,10 +38,7 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item 
-            <?php if($hal == 'datapeminjam') : ?>
-                <?= "active" ?>
-                <?php endif ?>">
+            <li class="nav-item">
                 <a class="nav-link" href="datapeminjam.php">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Kelola Data Pengguna</span>

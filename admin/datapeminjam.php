@@ -1,4 +1,6 @@
 <?php
+include_once("../template/head.php");
+include_once("../template/bodyA.php");
 $pengguna = query("SELECT * FROM db_user");
 ?>
 
@@ -66,3 +68,8 @@ $pengguna = query("SELECT * FROM db_user");
     </div>
 </div>
 <!-- /.container-fluid -->
+
+<?php
+include_once("../template/bodyAa.php");
+include_once("../template/foot.php");
+?>

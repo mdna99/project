@@ -1,4 +1,6 @@
 <?php
+include_once("../template/head.php");
+include_once("../template/bodyA.php");
 $peminjaman = query("SELECT * FROM peminjaman");
 ?>
 
@@ -52,3 +54,8 @@ $peminjaman = query("SELECT * FROM peminjaman");
     </div>
 </div>
 <!-- /.container-fluid -->
+
+<?php
+include_once("../template/bodyAa.php");
+include_once("../template/foot.php");
+?>

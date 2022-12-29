@@ -22,7 +22,7 @@ include_once("../template/bodyA.php");
                         <div class="card-body">
                             <h3 class="card-title font-weight-bold text-primary">3</h3>
                             <p class="card-text font-weight-bold">Request Peminjaman</p>
-                            <a href="#" class="btn btn-primary">Selebihnya <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="pengajuan.php" class="btn btn-primary">Selebihnya <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@ include_once("../template/bodyA.php");
                         <div class="card-body">
                             <h3 class="card-title font-weight-bold text-success">5</h3>
                             <p class="card-text font-weight-bold">Jadwal</p>
-                            <a href="#" class="btn btn-success">Selebihnya <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="jadwal.php" class="btn btn-success">Selebihnya <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
