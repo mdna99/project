@@ -6,7 +6,7 @@ $nama_db = "project";
 
 $koneksi = mysqli_connect($host_db,$username_db,$password_db,$nama_db);
 
-function query($query) {
+function squery($query) {
     global $koneksi;
     $result = mysqli_query($koneksi,$query);
     $rows = [];
@@ -34,27 +34,9 @@ function tambah($data) {
     return mysqli_affected_rows($koneksi); 
 }
 
-function hapus($id) {
-    global $koneksi;
-    mysqli_query($koneksi, "DELETE FROM db_mhs WHERE id = $id");
-    return mysqli_affected_rows($koneksi); 
-}
-
-
-function ubah($data) {
+function query($query) {
     global $koneksi;
 
-    $id = $data["id"];
-    $nama = htmlspecialchars($_POST["nama"]);
-    $nim = htmlspecialchars($_POST["nim"]);
-    $jurusan = htmlspecialchars($_POST["jurusan"]);
-
-    $query = "UPDATE db_mhs SET 
-                nama = '$nama',
-                nim = '$nim',
-                jurusan = '$jurusan'
-            WHERE id = $id;
-            ";
     mysqli_query($koneksi,$query);
     return mysqli_affected_rows($koneksi); 
 }
