@@ -53,7 +53,7 @@ $pengguna = query("SELECT * FROM db_user");
                                         <td><?= $pg[nama_lembaga]; ?></td>
                                         <td><?= $pg[level]; ?></td>
                                         <td>
-                                            <a href="?hal=datapeminjam hapus&id=<?= $pg[id_user]; ?>" class="badge badge-danger" onclick="return confirm('Apakah anda yakin?')">hapus</a>
+                                            <a href="hapus?id=<?= $pg[id_user]; ?>" class="badge badge-danger" onclick="return confirm('Apakah anda yakin?')">hapus</a>
                                         </td>
                                     </tr>
                                     <?php $i++; ?>

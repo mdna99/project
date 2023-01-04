@@ -41,8 +41,8 @@ $peminjaman = query("SELECT * FROM peminjaman");
                                 echo date_format($date, 'd/m /Y'); ?></td>
                                 <td><?php echo $q[keterangan]; ?></td>
                                 <td>
-                                    <a href="<?php echo base_url('admin/accrequest/' . $q[id_peminjaman]) ?>" onclick="return confirm('Terima Request?')" class="badge badge-primary">Terima Request</a>
-                                    <a href="<?php echo base_url('admin/disaccrequest/' . $q[id_peminjaman]) ?>" onclick="return confirm('Tolak Request?')" class="badge badge-danger">Tolak Request</a>
+                                    <a href="<?php echo 'accrequest.php?id=' . $q[id_peminjaman] ?>" onclick="return confirm('Terima Request?')" class="badge badge-primary">Terima Request</a>
+                                    <a href="<?php echo 'disaccrequest.php?id=' . $q[id_peminjaman] ?>" onclick="return confirm('Tolak Request?')" class="badge badge-danger">Tolak Request</a>
                                 </td>
                             </tr>
                         <?php $i++; ?>

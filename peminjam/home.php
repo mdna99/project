@@ -2,7 +2,7 @@
 include_once("../config/config.php");
 include_once("../config/functions.php");
 
-$jadwal = query("SELECT * FROM peminjaman");
+$jadwal = query("SELECT * FROM `peminjaman`");
 
 ?>
 
@@ -70,13 +70,13 @@ $jadwal = query("SELECT * FROM peminjaman");
                     <div class="row py-4">
                         <div class="col-md-12">
                             <div class="card">
-                                <form role="form" action="http://localhost/peminjaman-ruang/peminjam/pinjam" method="POST" enctype="multipart/form-data">
+                                <form role="form" action="pinjam.php" method="post">
                                     <div class="card-header bg-success py-3">
                                         <h6 class="m-0 font-weight-bold text-light">Pinjam Ruangan</h6>
                                     </div>
                                     <div>
                                         <div class="card-body">
-                                            <input type="hidden" id="pinjam_id_user" name="id_user" value="26">
+                                            <input type="hidden" id="pinjam_id_user" name="id_user" value="9">
                                             <div class="form-group">
                                                 <label>Nama Peminjam</label>
                                                 <input type="text" id="pinjam_nama_peminjam" name="nama_peminjam" readonly="" class="form-control" value="<?= "Muh Dian Nafi Aziz" ?>" required="">
@@ -103,7 +103,7 @@ $jadwal = query("SELECT * FROM peminjaman");
                                                 <input type="text" id="pinjam_keterangan" name="keterangan" class="form-control" required>
                                             </div>
                                             <div class="justify-content-end">
-                                                <button type="submit" name="pinjam" class="btn btn-primary pinjam">Pinjam</button>
+                                                <button type="submit" name="pinjam" class="btn btn-primary">Pinjam</button>
                                             </div>
                                         </div>
                                     </div>
@@ -165,25 +165,25 @@ $jadwal = query("SELECT * FROM peminjaman");
                                                                 $nowtime = strtotime(date('H:i:s')) + strtotime(date('Y-m-d'));
                                                                 $dbstart = strtotime($q->jam_mulai) + strtotime($q->tanggal);
                                                                 $dbend = strtotime($q->jam_berakhir) + strtotime($q->tanggal);
-                                                                $id_jadwal = $q->id_jadwal;
+                                                                $id_jadwal = $q['id_jadwal'];
                                                                 ?>
                                                                 <?php if ($dbend < $nowtime) {
-                                                                    $this->db->update('ruangan', ['status_ruangan' => 'Nganggur'], ['id_ruangan' => $q->id_ruangan]);
-                                                                    $this->db->update('jadwal', ['status_jadwal' => 3], ['id_jadwal' => $id_jadwal]);
+                                                                    query("UPDATE jadwal SET status_jadwal = 3 WHERE id_jadwal = $id_jadwal");
+                                                                    // $this->db->update('jadwal', ['status_jadwal' => 3], ['id_jadwal' => $id_jadwal]);
                                                                 } elseif ($nowtime >= $dbstart and $nowtime <= $dbend) {
-                                                                    $this->db->update('ruangan', ['status_ruangan' => 'Dipakai'], ['id_ruangan' => $q->id_ruangan]);
-                                                                    $this->db->update('jadwal', ['status_jadwal' => 1], ['id_jadwal' => $id_jadwal]); ?>
+                                                                    query("UPDATE jadwal SET status_jadwal = 1 WHERE id_jadwal = $id_jadwal");
+                                                                    // $this->db->update('jadwal', ['status_jadwal' => 1], ['id_jadwal' => $id_jadwal]); ?>
                                                                     <tr>
                                                                         <td><?php echo $no++; ?></td>
-                                                                        <td><?php echo $q->username; ?></td>
-                                                                        <td><?php echo substr($q->jam_mulai, 0, 5); ?></td>
-                                                                        <td><?php echo substr($q->jam_berakhir, 0, 5); ?></td>
-                                                                        <td><?php $date = date_create($q->tanggal);
+                                                                        <td><?php echo $q['username']; ?></td>
+                                                                        <td><?php echo substr($q['jam_mulai'], 0, 5); ?></td>
+                                                                        <td><?php echo substr($q['jam_berakhir'], 0, 5); ?></td>
+                                                                        <td><?php $date = date_create($q['tanggal']);
                                                                             echo date_format($date, 'd/m/Y'); ?></td>
-                                                                        <td><?php echo $q->keterangan; ?></td>
+                                                                        <td><?php echo $q['keterangan']; ?></td>
                                                                         <td>
                                                                             <?php
-                                                                            switch ($q->status_jadwal) {
+                                                                            switch ($q['status_jadwal']) {
                                                                                 case 1:
                                                                                     echo "<span class='text-success text-bold'>Sedang berlangsung...</span>";
                                                                                     break;
@@ -199,21 +199,21 @@ $jadwal = query("SELECT * FROM peminjaman");
                                                                             ?>
                                                                         </td>
                                                                         <td>
-                                                                            <a href="<?php echo base_url('admin/hapusjadwal/0/' . $q->id_jadwal) ?>" onclick="return confirm('Hapus jadwal?')" class="badge badge-danger" title="Batalkan jadwal">Hapus Jadwal</a>
+                                                                            <a href="<?php echo base_url('admin/hapusjadwal/0/' . $q['id_jadwal']) ?>" onclick="return confirm('Hapus jadwal?')" class="badge badge-danger" title="Batalkan jadwal">Hapus Jadwal</a>
                                                                         </td>
                                                                     </tr>
                                                                 <?php } else { ?>
                                                                     <tr>
                                                                         <td><?php echo $no++; ?></td>
-                                                                        <td><?php echo $q->username; ?></td>
-                                                                        <td><?php echo substr($q->jam_mulai, 0, 5); ?></td>
-                                                                        <td><?php echo substr($q->jam_berakhir, 0, 5); ?></td>
-                                                                        <td><?php $date = date_create($q->tanggal);
+                                                                        <td><?php echo $q['username'] ?></td>
+                                                                        <td><?php echo substr($q['jam_mulai'], 0, 5); ?></td>
+                                                                        <td><?php echo substr($q['jam_berakhir'], 0, 5); ?></td>
+                                                                        <td><?php $date = date_create($q['tanggal']);
                                                                             echo date_format($date, 'd/m/Y'); ?></td>
-                                                                        <td><?php echo $q->keterangan; ?></td>
+                                                                        <td><?php echo $q['keterangan']; ?></td>
                                                                         <td>
                                                                             <?php
-                                                                            switch ($q->status_jadwal) {
+                                                                            switch ($q['status_jadwal']) {
                                                                                 case 1:
                                                                                     echo "<span class='text-success text-bold'>Sedang berlangsung...</span>";
                                                                                     break;
@@ -229,7 +229,7 @@ $jadwal = query("SELECT * FROM peminjaman");
                                                                             ?>
                                                                         </td>
                                                                         <td>
-                                                                            <a href="<?php echo base_url('admin/hapusjadwal/0/' . $q->id_jadwal) ?>" onclick="return confirm('Hapus jadwal?')" class="badge badge-danger" title="Batalkan jadwal">Hapus Jadwal</a>
+                                                                            <a href="<?php echo base_url('admin/hapusjadwal/0/' . $q['id_jadwal']) ?>" onclick="return confirm('Hapus jadwal?')" class="badge badge-danger" title="Batalkan jadwal">Hapus Jadwal</a>
                                                                         </td>
                                                                     </tr>
                                                             <?php };

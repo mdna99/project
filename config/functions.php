@@ -1,4 +1,10 @@
 <?php
+$username_db = "root";
+$password_db = "root";
+$host_db = "localhost";
+$nama_db = "project";
+
+$koneksi = mysqli_connect($host_db,$username_db,$password_db,$nama_db);
 
 function query($query) {
     global $koneksi;
@@ -10,70 +16,97 @@ function query($query) {
     return $rows;
 }
 
-function accrequest($id_peminjaman)
-	{
 
-		$cekpeminjaman = $this->db->get_where('peminjaman', ['id_peminjaman' => $id_peminjaman])->row_array();
+function tambah($data) {
+    global $koneksi;
 
-		$nowtime = strtotime(date('H:i:s')) + strtotime(date('Y-m-d'));
+    $id_user = $_POST['id_user'];
+    $username = $_POST['username'];
+    $jam_mulai = $_POST['jam_mulai'];
+    $jam_berakhir = $_POST['jam_berakhir'];
+    $tanggal = $_POST['tanggal'];
+    $keterangan = htmlspecialchars($_POST['keterangan']);
 
-		$dbstart = strtotime($cekpeminjaman['jam_mulai']) + strtotime($cekpeminjaman['tanggal']);
-		$dbend = strtotime($cekpeminjaman['jam_berakhir']) + strtotime($cekpeminjaman['tanggal']);
+    $query = "INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `jam_mulai`, `jam_berakhir`, `tanggal`, `keterangan`, `status_peminjaman`)
+	VALUES
+(NULL, '$id_user', '$jam_mulai', '$jam_berakhir', '$tanggal', '$keterangan', '0')";
+    mysqli_query($koneksi,$query);
+    return mysqli_affected_rows($koneksi); 
+}
 
-		if ($nowtime >= $dbstart and $nowtime <= $dbend) {
-			$ruangan = $cekpeminjaman['id_ruangan'];
-			$cekjadwal = $this->db->query('SELECT * FROM jadwal INNER JOIN peminjaman, ruangan 
-			WHERE jadwal.id_peminjaman=peminjaman.id_peminjaman
-			AND peminjaman.id_ruangan=ruangan.id_ruangan
-			AND status_jadwal=1
-			AND peminjaman.id_ruangan=' . $ruangan)->row_array();
+function hapus($id) {
+    global $koneksi;
+    mysqli_query($koneksi, "DELETE FROM db_mhs WHERE id = $id");
+    return mysqli_affected_rows($koneksi); 
+}
 
-			if ($cekjadwal) {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal diterima, jadwal bentrok!</div>');
-				redirect('admin/request');
-			} else {
-				$this->db->update('ruangan', ['status_ruangan' => 'Dipakai'], ['id_ruangan' => $cekpeminjaman['id_ruangan']]);
-				$this->db->update('peminjaman', array('status_peminjaman' => 1), array('id_peminjaman' => $id_peminjaman));
-				$this->db->insert('jadwal', array(
-					'id_jadwal' => null,
-					'id_peminjaman' => $id_peminjaman,
-					'status_jadwal' => 1
-				));
-				$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Request diterima!</div>');
-				redirect('admin/request');
-			}
-		} elseif ($nowtime < $dbstart) {
-			$ruangan = $cekpeminjaman['id_ruangan'];
-			$cekjadwal = $this->db->query('SELECT * FROM jadwal INNER JOIN peminjaman, ruangan 
-			WHERE jadwal.id_peminjaman=peminjaman.id_peminjaman
-			AND peminjaman.id_ruangan=ruangan.id_ruangan
-			AND status_jadwal=2
-			AND peminjaman.id_ruangan=' . $ruangan)->row_array();
 
-			$dbone = strtotime($cekjadwal['jam_mulai']) + strtotime($cekjadwal['jam_ berakhir']) + strtotime($cekjadwal['tanggal']);
+function ubah($data) {
+    global $koneksi;
 
-			$dbtwo = strtotime($cekpeminjaman['jam_mulai']) + strtotime($cekpeminjaman['jam_ berakhir']) + strtotime($cekpeminjaman['tanggal']);
+    $id = $data["id"];
+    $nama = htmlspecialchars($_POST["nama"]);
+    $nim = htmlspecialchars($_POST["nim"]);
+    $jurusan = htmlspecialchars($_POST["jurusan"]);
 
-			if ($dbone == $dbtwo) {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal diterima, jadwal bentrok!</div>');
-				redirect('admin/request');
-			} else {
-				$this->db->update('peminjaman', array('status_peminjaman' => 2), array('id_peminjaman' => $id_peminjaman));
-				$this->db->insert('jadwal', array(
-					'id_jadwal' => null,
-					'id_peminjaman' => $id_peminjaman,
-					'status_jadwal' => 2
-				));
-				$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Request diterima!</div>');
-				redirect('admin/request');
-			}
-		} else {
-			$this->db->insert('jadwal', array(
-				'id_jadwal' => null,
-				'id_peminjaman' => $id_peminjaman,
-				'status_jadwal' => 1
-			));
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Request diterima!</div>');
-			redirect('admin/request');
-		}
+    $query = "UPDATE db_mhs SET 
+                nama = '$nama',
+                nim = '$nim',
+                jurusan = '$jurusan'
+            WHERE id = $id;
+            ";
+    mysqli_query($koneksi,$query);
+    return mysqli_affected_rows($koneksi); 
+}
+
+
+function cari($keyword) {
+    $query = "SELECT * FROM db_mhs
+                WHERE
+            nama LIKE '%$keyword%' OR
+            nim LIKE '%$keyword%' OR
+            jurusan LIKE '%$keyword%'
+            ";
+
+    return query($query);
+}
+
+
+function registrasi($data) {
+    global $koneksi;
+
+    $username = strtolower(stripslashes($data["username"]));
+    $password = mysqli_real_escape_string($koneksi, $data["password"]);
+    $password2 = mysqli_real_escape_string($koneksi, $data["password2"]);
+
+    // cek username sudah ada atau belum
+    $result = mysqli_query($koneksi, "SELECT `username` FROM `user` WHERE `username` = '$username'");
+    if ( mysqli_fetch_assoc($result) ) {
+        echo "<script>
+                alert('username sudah terdaftar!')
+            </script>";
+        return false;
+    }
+    // var_dump(mysqli_fetch_assoc($result));
+
+    // cek konfirmasi password
+    if($password !== $password2) {
+        echo "<script>
+                alert('konfirmasi password tidak sesuai!');
+            </script>";
+
+            return false;
+    }
+    
+    // enkripsi password
+    $password = password_hash($password,  PASSWORD_DEFAULT);
+
+    // tambahkan data baru e database
+    mysqli_query($koneksi, "INSERT INTO `user` (`id`, `username`, `password`) 
+                VALUES 
+            (NULL, '$username', '$password');
+            ");
+
+    return mysqli_affected_rows($koneksi);
+
 }
