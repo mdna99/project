@@ -22,14 +22,14 @@ include_once("../config/functions.php");
 
     $pinjam = tambah($_POST);
     // $this->m_siplabs->add_data('peminjaman', $array);
-    var_dump($pinjam);
-    // if ($pinjam > 0) {
-    //     echo "
-    //     <script>
-    //         alert('Pemesanan berhasil! Harap tunggu konfirmasi admin untuk menerima jadwal');
-    //         document.location.href= 'https://stackoverflow.com/questions/13109522/this-session-set-flashdata-and-then-this-session-flashdata-doesnt-wor';
-    //     </script>
-    //     "; }
+    // var_dump($pinjam);
+    if ($pinjam > 0) {
+        echo "
+        <script>
+            alert('Pemesanan berhasil! Harap tunggu konfirmasi admin untuk menerima jadwal');
+            document.location.href= 'https://api.whatsapp.com/send?phone=+6285727886700';
+        </script>
+        "; }
     // $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible">
     //     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     //     <h5><i class="icon fas fa-check"></i> Pemesanan berhasil!</h5>
