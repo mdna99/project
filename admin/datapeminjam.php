@@ -1,7 +1,7 @@
 <?php
 include_once("../template/head.php");
 include_once("../template/bodyA.php");
-$pengguna = query("SELECT * FROM db_user");
+$pengguna = squery("SELECT * FROM db_user");
 ?>
 
 <!-- Begin Page Content -->

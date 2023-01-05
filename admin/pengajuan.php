@@ -1,7 +1,7 @@
 <?php
 include_once("../template/head.php");
 include_once("../template/bodyA.php");
-$peminjaman = query("SELECT * FROM peminjaman");
+$peminjaman = squery("SELECT * FROM peminjaman");
 ?>
 
 <!-- Begin Page Content -->

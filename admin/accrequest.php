@@ -8,12 +8,11 @@ include_once("../config/functions.php");
 
 	$nowtime = strtotime(date('H:i:s')) + strtotime(date('Y-m-d'));
 
-	$dbstart = strtotime($cekpeminjaman['jam_mulai']) + strtotime($cekpeminjaman['tanggal']);
-	$dbend = strtotime($cekpeminjaman['jam_berakhir']) + strtotime($cekpeminjaman['tanggal']);
+	$dbstart = strtotime($cekpeminjaman[0]['jam_mulai']) + strtotime($cekpeminjaman[0]['tanggal']);
+	$dbend = strtotime($cekpeminjaman[0]['jam_berakhir']) + strtotime($cekpeminjaman[0]['tanggal']);
 
 	if ($nowtime >= $dbstart and $nowtime <= $dbend) {
-		$ruangan = $cekpeminjaman['id_ruangan'];
-		$cekjadwal = squery("SELECT * FROM jadwal INNER JOIN peminjaman
+		$cekjadwal = squery("SELECT * FROM `jadwal` INNER JOIN peminjaman
 		WHERE jadwal.id_peminjaman=peminjaman.id_peminjaman
 		AND status_jadwal=1");
 
@@ -25,12 +24,12 @@ include_once("../config/functions.php");
             </script>
             ";
 		} else {
-			query("UPDATE peminjaman SET
-						status_peminjaman = 1
+			query("UPDATE `peminjaman` SET
+						`status_peminjaman` = 1
 					WHERE
-						id_peminjaman = $id_peminjaman
+						`id_peminjaman` = '$id_peminjaman'
 				");
-			query("INSERT INTO jadwal ('id_jadwal', 'id_peminjaman', 'status_jadwal') 
+			query("INSERT INTO `jadwal` ('id_jadwal', 'id_peminjaman', 'status_jadwal') 
 						VALUES
 					(NULL, '$id_peminjaman', 1)");
 			// $this->db->update('peminjaman', array('status_peminjaman' => 1), array('id_peminjaman' => $id_peminjaman));
@@ -49,13 +48,13 @@ include_once("../config/functions.php");
 			// redirect('admin/request');
 		}
 	} elseif ($nowtime < $dbstart) {
-		$cekjadwal = squery("SELECT * FROM jadwal INNER JOIN peminjaman
-		WHERE jadwal.id_peminjaman=peminjaman.id_peminjaman
-		AND status_jadwal=2");
+		$cekjadwal = squery("SELECT * FROM `jadwal` INNER JOIN peminjaman
+		WHERE `jadwal`.`id_peminjaman`=`peminjaman`.`id_peminjaman`
+		AND `status_jadwal`=2");
 
 		$dbone = strtotime($cekjadwal['jam_mulai']) + strtotime($cekjadwal['jam_ berakhir']) + strtotime($cekjadwal['tanggal']);
 
-		$dbtwo = strtotime($cekpeminjaman['jam_mulai']) + strtotime($cekpeminjaman['jam_ berakhir']) + strtotime($cekpeminjaman['tanggal']);
+		$dbtwo = strtotime($cekpeminjaman[0]['jam_mulai']) + strtotime($cekpeminjaman[0]['jam_ berakhir']) + strtotime($cekpeminjaman[0]['tanggal']);
 
 		if ($dbone == $dbtwo) {
 			echo "
@@ -67,8 +66,8 @@ include_once("../config/functions.php");
 			// $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal diterima, jadwal bentrok!</div>');
 			// redirect('admin/request');
 		} else {
-			query("UPDATE peminjaman SET status_peminjaman = 2 WHERE id_peminjaman = '$id_peminjaman'");
-			query("INSERT INTO jadwal ('id_jadwal', 'id_peminjaman', 'status_jadwal')
+			query("UPDATE `peminjaman` SET `status_peminjaman` = 2 WHERE `id_peminjaman` = '$id_peminjaman'");
+			query("INSERT INTO `jadwal` ('id_jadwal', 'id_peminjaman', 'status_jadwal')
 						VALUES
 					(NULL, '$id_peminjaman', 2)");
 			// $this->db->update('peminjaman', array('status_peminjaman' => 2), array('id_peminjaman' => $id_peminjaman));
@@ -87,7 +86,7 @@ include_once("../config/functions.php");
 			// redirect('admin/request');
 		}
 	} else {
-		query("INSERT INTO jadwal ('id_jadwal', 'id_peminjaman', 'status_jadwal')
+		query("INSERT INTO `jadwal` ('id_jadwal', 'id_peminjaman', 'status_jadwal')
 				VALUES
 			(NULL, '$id_peminjaman', 1)");
 		// $this->db->insert('jadwal', array(

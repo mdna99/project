@@ -1,7 +1,7 @@
 <?php
 include_once("../template/head.php");
 include_once("../template/bodyA.php");
-$jadwal = query("SELECT * FROM peminjaman");
+$jadwal = squery("SELECT * FROM peminjaman");
 ?>
 
 <!-- Begin Page Content -->
